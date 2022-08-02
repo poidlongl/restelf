@@ -28,11 +28,23 @@ class Request {
         tokens.join('/')
     }
 
-    static String appendQuery(String uri, Map<String,String> query) {
+    private static String encodedQuery(String k, v ) {
+        if ( v == null) {
+            return k
+        }
+        "$k=${URLEncoder.encode(v.toString(), 'UTF-8')}"
+    }
+    static String appendQuery(String uri, Map<String,Object> query) {
         if ( ! query ) return uri
         uri + '?' + query.collect { key, val ->
-            "$key=${URLEncoder.encode(val, 'UTF-8')}"
-        }.join('&')
+
+            switch ( val ) {
+                case Collection:
+                    return val.collect {encodedQuery(key, it )}
+                default:
+                    return encodedQuery(key, val )
+            }
+        }.flatten().join('&')
     }
 
     URI getUri() {

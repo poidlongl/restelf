@@ -6,15 +6,15 @@ import groovy.transform.AutoClone
 @AutoClone
 class Request {
     String url
-    String _path
+    String path
     Map headers =[:]
     Map query =[:]
     Object body
     String method
-
-    void path(String p ) {
-        _path = p
-    }
+    int retries = 0
+    @Lazy uri = {
+        URI.create(appendQuery(appendPath(url, path), query as Map<String, String>))
+    }()
 
     static String appendPath(String base, String path ) {
         while ( base.endsWith('/')) {
@@ -45,10 +45,6 @@ class Request {
                     return encodedQuery(key, val )
             }
         }.flatten().join('&')
-    }
-
-    URI getUri() {
-        URI.create(appendQuery(appendPath(url, _path), query as Map<String, String>))
     }
 
     String getBodyContent() {

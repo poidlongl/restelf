@@ -9,20 +9,23 @@ class RestTest {
     static void main(String[] args) {
         def github = Github.instance
 
-//        def response = github.get('users/poidlongl')
-//        println(response.text)
-
         def response = github.request {
             method =  'GET'
-            path 'users/poidlongl'
+            path = 'users/poidlongl'
         }
 
         log.info response.value
 
-        response = github.get {
-            path 'users/poidlongl'
+        response = github.put {
+            path = 'repos/poidlongl/restelf/topics'
+            body = [
+                names: [ 'topic1', 'topic2' ]
+            ]
         }
-        log.info response.value.login
+        println response.request().headers().map()
+        println response.request().uri()
+        println response.request().method()
+        println response.requestHelper.bodyContent
 
     }
 }

@@ -43,6 +43,7 @@ class Service {
             }, new SecureRandom())
             client.sslContext(sslContext)
         }
+        client.followRedirects(HttpClient.Redirect.NORMAL)
         client.build()
     }()
 

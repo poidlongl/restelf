@@ -17,6 +17,7 @@ class Request {
     }()
 
     static String appendPath(String base, String path ) {
+        if ( path == null ) { path = ''}
         while ( base.endsWith('/')) {
             base = base[0..-2]
         }

@@ -32,4 +32,26 @@ class Response {
     boolean isValid() {
         return (200..399).contains(response.statusCode())
     }
+
+    boolean isSuccess() {
+        return (200..299).contains(response.statusCode())
+    }
+
+    Response success(Closure process ) {
+        if ( success ) {
+            process( value )
+        }
+        this
+    }
+
+    Response fail(Closure fail) {
+        if ( ! success ) {
+            fail(this)
+        }
+        this
+    }
+
+    void raiseException( String msg = '' ) {
+        throw new Exception("Operation failed: ${requestHelper.method} ${request().uri()} :: ${statusCode()} ${contentLenth ? ' || ' + value:''}")
+    }
 }

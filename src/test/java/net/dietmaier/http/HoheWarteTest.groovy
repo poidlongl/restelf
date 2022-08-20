@@ -17,7 +17,8 @@ class HoheWarteTest extends Specification {
     }
 
     def "GetCurrent"() {
-        when: println ( hoheWarte.current )
+        when:
+            new File('/tmp/wsdata.csv') << ( hoheWarte.current )
         then: true 
     }
 }
